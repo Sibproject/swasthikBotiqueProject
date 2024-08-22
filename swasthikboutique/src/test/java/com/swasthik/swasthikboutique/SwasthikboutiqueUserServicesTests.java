@@ -29,6 +29,9 @@ class SwasthikboutiqueUserServicesTests {
 	@InjectMocks
 	private UserService userService;
 	
+	@InjectMocks
+	private UserDetails userDetails;
+	
 	@BeforeEach
 	void init() {
 		MockitoAnnotations.openMocks(this);
@@ -42,7 +45,7 @@ class SwasthikboutiqueUserServicesTests {
 	@Test
 	void testSaveuserToServer() {
 		
-		UserDetails userDetails = userInformation();
+		userDetails = userInformation();
 		
 		/*
 		 * userDetails.setFirstName("sib"); userDetails.setLastName("wg");
@@ -69,7 +72,7 @@ class SwasthikboutiqueUserServicesTests {
 	
 	@Test
 	void getAllUsers() {
-		UserDetails userDetails = userInformation();
+	    userDetails = userInformation();
 		List<UserDetails> users = new ArrayList<>();
 		users.add(userDetails);
 		
@@ -85,8 +88,8 @@ class SwasthikboutiqueUserServicesTests {
 		
 	}
 	
-	public static UserDetails userInformation() {
-		UserDetails userDetails = new UserDetails();
+	public UserDetails userInformation() {
+		userDetails = new UserDetails();
 		
 		userDetails.setFirstName("sib");
 		userDetails.setLastName("wg");
