@@ -1,7 +1,6 @@
 package com.swasthik.swasthikboutique.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.swasthik.swasthikboutique.model.User;
+import com.swasthik.swasthikboutique.model.UserDetails;
 import com.swasthik.swasthikboutique.service.UserService;
 
 @RestController
@@ -23,22 +22,24 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> addUser(@RequestBody User user) {
-        User savedUser = userService.saveUser(user);
+    public ResponseEntity<UserDetails> addUser(@RequestBody UserDetails user) {
+        UserDetails savedUser = userService.saveUser(user);
         return ResponseEntity.ok(savedUser);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
+    public ResponseEntity<List<UserDetails>> getAllUsers() {
+        List<UserDetails> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable Long id) {
-        Optional<User> user = userService.getUserById(id);
-        return user.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/{firstName}")
+    public ResponseEntity<List<UserDetails>> getUserByFirstName(@PathVariable String firstName) {
+        List<UserDetails> users = userService.findUserByFirstName(firstName);
+        if (users.isEmpty()) {
+            return ResponseEntity.noContent().build(); // Return 204 No Content if no users are found
+        }
+        return ResponseEntity.ok(users); // Return 200 OK with the list of users
     }
 
 }
